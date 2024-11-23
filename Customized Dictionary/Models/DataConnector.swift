@@ -57,12 +57,12 @@ class DataConnector {
         return returnTable
     }
     
-    /// Create a new Table in the database
+    /// Create a new Folder Table in the database
     /// - Parameters
     ///         - tableName
     /// - Throws: fatalError if the creation fails
-    func createTable(tableName: String) {
-        var table = Table(tableName)
+    func createTableFolder(tableName: String) {
+        var table = Table("Folder" + tableName)
         do {
             try db.run(table.create { t in
                 t.column(SQLTable.name, primaryKey: true)
@@ -73,6 +73,24 @@ class DataConnector {
         }
     }
     
+    /// Create a new Wordlist Table in the database
+    /// - Parameters
+    ///         - tableName
+    /// - Throws: fatalError if the creation fails
+    func createTableWordlist(tableName: String) {
+        var table = Table("Wordlist" + tableName)
+        do {
+            try db.run(table.create { t in
+                t.column(SQLTable.name, primaryKey: true)
+                t.column(SQLTable.data)
+            })
+        } catch {
+            fatalError("createTable failed error is \(error)")
+        }
+    }
+    
+    ///
+    ///
     func insertRow(tableName: String, name: String, t: Codable) {
         
     }
