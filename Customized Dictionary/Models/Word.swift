@@ -8,21 +8,22 @@
 import Foundation
 import SwiftUI
 
-struct Word: Codable {
+struct Word {
     var spell: String
-    var passCount: Int
+    var passCount: Int64
     
-    private var imageNames: [String]
+    // switch the array order to change the images displayed everytime the user dictate it
+    var imageNames: [String]
     var images: [Image] {
         imageNames.map {
             Image($0)
         }
     }
     
-    private var audioName: String
+    var audioName: String
     
     var type: WordType
-    enum WordType: String, Codable {
+    enum WordType: String {
         case verb = "v"
         case noun = "n"
         case adjective = "adj"
@@ -30,3 +31,5 @@ struct Word: Codable {
         var id: String {rawValue}
     }
 }
+
+
