@@ -63,78 +63,26 @@ class DataConnector {
         }
     }
     
-    /// Create a new Folder Table in the database
-    /// - Parameters
-    ///         - tableName
-    /// - Throws: fatalError if the creation fails
-    func createFolderTableInSQL(tableName: String) {
-        let table = Table("Folder" + tableName)
-        do {
-            try db.run(table.create { t in
-                t.column(WordListTable.name, primaryKey: true)
-                t.column(WordListTable.language)
-                t.column(WordListTable.start)
-                t.column(WordListTable.date)
-            })
-        } catch {
-            fatalError("Create Folder table failed")
-        }
-    }
-    
-    /// Create a new Wordlist Table in the database
-    /// - Parameters
-    ///         - tableName
-    /// - Returns
-    ///         - True: If the table is created successfully
-    ///         - False: if the table name has duplicate in the sql
-    func createWordlistTableInSQL(tableName: String) {
-        let table = Table("Wordlist" + tableName)
-        do {
-            try db.run(table.create { t in
-                t.column(WordTable.spell, primaryKey: true)
-                t.column(WordTable.passCount)
-                t.column(WordTable.imageNumber)
-                t.column(WordTable.type)
-                t.column(WordTable.typeNumber)
-            })
-        } catch {
-            fatalError("Create Wordlist table failed")
-        }
-    }
-    
-    /// Insert a folder record  to the mainFolder table
+    /// Insert a folder record to the mainFolder table
+    /// - Steps
+    ///     1. Insert the record to the mainFolder SQL table
+    ///     2. Create a folder Table in the SQL database
+    ///     3. Create a folder directory in the mainFolder directory
     /// - Parameters
     ///     - dataName: first column "name" of the record
     ///     - data: second column "data" object of the record
     /// - Returns
     ///     - True: the record is added successfully
     ///     - False: the record may have duplicates in the database
-    func insertMainFolder(dataName: String, data: Codable) -> Bool {
-//        if insertRow(tableName: "mainFolder", dataName: dataName, data: data) == false {
-//            return false
-//        }
+    func insertFolderInMainFolder(f: Folder) -> Bool {
+        if insertRecordInMainfolder(f: f) == false {
+            return false
+        }
         createFolderTableInSQL(tableName: dataName)
-        createDir(path: "\(mainFolderDir)/\(dataName)", checkExist: false)
+        createDir(path: "\(mainFolderDir)/\(f.folderName)", checkExist: false)
         return true
     }
-    
-    /// Insert a wordlist record to a Folder table and create a table corresponds in sqlite database
-    /// - Parameters
-    ///     - tableName: name of the Folder to add the record
-    ///     - dataName: first column "name" of the record
-    ///     - data: second column "data" object of the record
-    /// - Returns
-    ///     - True: the record is added successfully
-    ///     - False: the record may have duplicates in the database
-    func insertFolder(tableName: String, wordlist: WordList) -> Bool {
-//        if insertRow(tableName: "Folder" + wordlist.name) == false {
-//            return false
-//        }
-//        createWordlistTableInSQL(tableName: dataName)
-//        createDir(path: "\(mainFolderDir)/\(tableName)/\(dataName)", checkExist: false)
-//        return true
-    }
-    
+
     private func insertRecordInMainfolder(f: Folder) -> Bool {
         let table = Table("mainFolder")
         
@@ -149,8 +97,37 @@ class DataConnector {
         }
         return true
     }
-    
 
+    func createFolderTableInSQL(tableName: String) {
+        let table = Table("Folder" + tableName)
+        do {
+            try db.run(table.create { t in
+                t.column(WordListTable.name, primaryKey: true)
+                t.column(WordListTable.language)
+                t.column(WordListTable.start)
+                t.column(WordListTable.date)
+            })
+        } catch {
+            fatalError("Create Folder table failed")
+        }
+    }
+    
+    /// Insert a wordlist record to a Folder table and create a table corresponds in sqlite database
+    /// - Parameters
+    ///     - tableName: name of the Folder to add the record
+    ///     - dataName: first column "name" of the record
+    ///     - data: second column "data" object of the record
+    /// - Returns
+    ///     - True: the record is added successfully
+    ///     - False: the record may have duplicates in the database
+    func insertWordlistInFolder(f: Folder, w: Wordlist) -> Bool {
+       if insertRecordInFolder(f: f, w: w) == false {
+           return false
+       }
+       createWordlistTableInSQL(tableName: w.name)
+       createDir(path: "\(mainFolderDir)/\(f.folderName)/\(w.name)", checkExist: false)
+       return true
+    }
     
     private func insertRecordInFolder(f: Folder, w: WordList) -> Bool {
         let table = Table("folder\(f.folderName)")
@@ -168,6 +145,36 @@ class DataConnector {
             return false
         }
         return true
+    }
+
+    func createWordlistTableInSQL(tableName: String) {
+        let table = Table("Wordlist" + tableName)
+        do {
+            try db.run(table.create { t in
+                t.column(WordTable.spell, primaryKey: true)
+                t.column(WordTable.passCount)
+                t.column(WordTable.imageNumber)
+                t.column(WordTable.type)
+                t.column(WordTable.typeNumber)
+            })
+        } catch {
+            fatalError("Create Wordlist table failed")
+        }
+    }
+    
+    /// Insert a word to a wordlist
+    /// - Parameters
+    ///     - tableName: name of the wordlist table to add the record
+    ///     - word: word object
+    /// - Returns
+    ///     - True: the record is added successfully
+    ///     - False: the record may have duplicates in the database
+    func insertWordlist(f: Folder, w: WordList, W: Word, images: [Image], audioFileURL: URL) -> Bool {
+        insertRecordInWordlist(w: w, W: W)
+
+        do {
+            try FileManager.default.copyItem(at: audioFileURL, to: URL(fileURLWithPath: "\(mainFolderDir)/\(f.folderName)/\(w.name)/\(W.spell).mp3"))
+        }
     }
     
     private func insertRecordInWordlist(w: WordList, W: Word) -> Bool {
@@ -188,16 +195,9 @@ class DataConnector {
         }
         return true
     }
-    
-    /// Insert a word record to a wordlist
-    /// - Parameters
-    ///     - tableName: name of the wordlist table to add the record
-    ///     - word: word object
-    /// - Returns
-    ///     - True: the record is added successfully
-    ///     - False: the record may have duplicates in the database
-    func insertWordlist(f: Folder, w: WordList, W: Word) -> Bool {
-        insertRecordInWordlist(w: w, W: W)
+
+    private func copyWordFiles(wordlistDirPath: String, word: Word) {
+
     }
     
     /// Delete a folder from the main Folder table, remove the entire directory related to the folder
