@@ -8,20 +8,20 @@
 import Foundation
 import SwiftUI
 
-struct WordList: Codable, Identifiable {
+struct WordList {
     var name: String
-    var language: String
-    // for Identifiable protocol
-    var id: Int32
-    
-    private var logoName: String
+    let language: String
+    let parentDir: String
     var logo: Image {
-        Image(logoName)
+        let logoPath = "\(parentDir)/logo.jpg"
+        if let uiImage = UIImage(contentsOfFile: logoPath) {
+            return Image(uiImage: uiImage)
+        } else {
+            return Image(systemName: "photo")
+        }
     }
     
     var start: Bool
     var date: Date
-    
-    @NotCoded
     var words: [Word]?
 }

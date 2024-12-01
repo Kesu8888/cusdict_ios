@@ -12,14 +12,7 @@ struct Word {
     var spell: String
     var passCount: Int64
     
-    // switch the array order to change the images displayed everytime the user dictate it
-    var imageNames: [String]
-    var images: [Image] {
-        imageNames.map {
-            Image($0)
-        }
-    }
-    
+    var imageNumber: Int64
     var audioName: String
     
     var type: WordType
@@ -30,6 +23,7 @@ struct Word {
         case adverb = "adv"
         var id: String {rawValue}
     }
+    var typeNumber: Int64
 }
 
 
