@@ -7,7 +7,10 @@
 
 import Foundation
 import SQLite
+import SwiftUI
+import UIKit
 
+// To convert date and string and back
 extension Date {
     func toISO8601String() -> String {
         let formatter = ISO8601DateFormatter()
@@ -17,6 +20,21 @@ extension Date {
     static func fromISO8601String(_ string: String) -> Date? {
         let formatter = ISO8601DateFormatter()
         return formatter.date(from: string)
+    }
+}
+
+// To downgrade the image
+extension UIImage {
+    func resized(toWidth width: CGFloat) -> UIImage? {
+        let canvasSize = CGSize(width: width, height: CGFloat(ceil(width/size.width * size.height)))
+        UIGraphicsBeginImageContextWithOptions(canvasSize, false, scale)
+        defer { UIGraphicsEndImageContext() }
+        draw(in: CGRect(origin: .zero, size: canvasSize))
+        return UIGraphicsGetImageFromCurrentImageContext()
+    }
+    
+    func jpegData(compressionQuality: CGFloat) -> Data? {
+        return self.jpegData(compressionQuality: compressionQuality)
     }
 }
 
@@ -78,7 +96,7 @@ class DataConnector {
         if insertRecordInMainfolder(f: f) == false {
             return false
         }
-        createFolderTableInSQL(tableName: dataName)
+        createFolderTableInSQL(tableName: f.folderName)
         createDir(path: "\(mainFolderDir)/\(f.folderName)", checkExist: false)
         return true
     }
@@ -120,7 +138,7 @@ class DataConnector {
     /// - Returns
     ///     - True: the record is added successfully
     ///     - False: the record may have duplicates in the database
-    func insertWordlistInFolder(f: Folder, w: Wordlist) -> Bool {
+    func insertWordlistInFolder(f: Folder, w: WordList) -> Bool {
        if insertRecordInFolder(f: f, w: w) == false {
            return false
        }
@@ -169,25 +187,30 @@ class DataConnector {
     /// - Returns
     ///     - True: the record is added successfully
     ///     - False: the record may have duplicates in the database
-    func insertWordlist(f: Folder, w: WordList, W: Word, images: [Image], audioFileURL: URL) -> Bool {
-        insertRecordInWordlist(w: w, W: W)
-
-        do {
-            try FileManager.default.copyItem(at: audioFileURL, to: URL(fileURLWithPath: "\(mainFolderDir)/\(f.folderName)/\(w.name)/\(W.spell).mp3"))
+    func insertWordlist(f: Folder, w: WordList, W: Word, images: [UIImage], audioFileURL: URL) -> Bool {
+        if !insertRecordInWordlist(w: w, W: W) {
+            return false
         }
+
+        copyImagesAndAudio(wordlistDirPath: "\(dir)/mainFolder/\(f.folderName)/\(w.name)", images: images, audioFileURL: audioFileURL)
+        return true
     }
     
     private func insertRecordInWordlist(w: WordList, W: Word) -> Bool {
         let table = Table("wordlist\(w.name)")
         
         do {
+            let jsonData = try jsonEncoder.encode(W.tags)
+            let jsonString = String(data: jsonData, encoding: .utf8)
             try db.run(
                 table.insert(
                     WordTable.spell <- W.spell,
                     WordTable.imageNumber <- W.imageNumber,
                     WordTable.passCount <- W.passCount,
                     WordTable.type <- W.type.rawValue,
-                    WordTable.typeNumber <- W.typeNumber
+                    WordTable.typeNumber <- W.typeNumber,
+                    // It means if jsonString is nil, use "" instead
+                    WordTable.tag <- jsonString ?? ""
                 )
             )
         } catch {
@@ -195,9 +218,31 @@ class DataConnector {
         }
         return true
     }
-
-    private func copyWordFiles(wordlistDirPath: String, word: Word) {
-
+    
+    private func copyImagesAndAudio(wordlistDirPath: String, images: [UIImage], audioFileURL: URL) {
+        let wordDir = "\(wordlistDirPath)"
+        createDir(path: wordDir, checkExist: true)
+        
+        do {
+            // Copy audio
+            let audioDestinationURL = URL(fileURLWithPath: "\(wordDir)/pron.mp3")
+            try FileManager.default.copyItem(at: audioFileURL, to: audioDestinationURL)
+        } catch {
+            fatalError("Cannot copy audio to word folder")
+        }
+        
+        do {
+            // Resize and copy images
+            for (index, image) in images.enumerated() {
+                if let resizedImage = image.resized(toWidth: 300), // Resize to desired width
+                   let imageData = resizedImage.jpegData(compressionQuality: 0.8) { // Convert to JPEG with compression quality
+                    let imageDestinationURL = URL(fileURLWithPath: "\(wordDir)/image\(index + 1).jpg")
+                    try imageData.write(to: imageDestinationURL)
+                }
+            }
+        } catch {
+            fatalError("Cannot copy images to word folder")
+        }
     }
     
     /// Delete a folder from the main Folder table, remove the entire directory related to the folder

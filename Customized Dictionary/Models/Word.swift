@@ -11,9 +11,7 @@ import SwiftUI
 struct Word {
     var spell: String
     var passCount: Int64
-    
     var imageNumber: Int64
-    var audioName: String
     
     var type: WordType
     enum WordType: String {
@@ -24,6 +22,12 @@ struct Word {
         var id: String {rawValue}
     }
     var typeNumber: Int64
+    
+    var tags: [Tag]
+    struct Tag: Codable{
+        var Description: String
+        var answer: String
+    }
 }
 
 
