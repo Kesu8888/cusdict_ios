@@ -244,6 +244,63 @@ class DataConnector {
             fatalError("Cannot copy images to word folder")
         }
     }
+
+    /// get all Folders in the mainFolder table with their Wordlists and return the folder Array
+    /// - Returns
+    ///     - True: the record is added successfully
+    ///     - False: the record may have duplicates in the database
+    func getFolder() -> [Folder] {
+        let table = Table("mainFolder")
+        var folders = [Folder]()
+
+        do {
+            for folder in try db.prepare(table) {
+                let folderName = folder[FolderTable.name]
+                let wordlists = getWordlist(folderName: folderName)
+                folders.append(Folder(folderName: folderName, lists: wordlists))
+            }
+        } catch {
+            fatalError("Get Folder failed")
+        }
+    }
+
+    func getWordlist(folderName: String) -> [WordList] {
+        let table = Table("folder\(folderName)")
+        var wordlists = [WordList]()
+
+        do {
+            for wordlist in try db.prepare(table) {
+                let name = wordlist[WordListTable.name]
+                let language = wordlist[WordListTable.language]
+                let start = wordlist[WordListTable.start]
+                let date = Date.fromISO8601String(wordlist[WordListTable.date])
+                wordlists.append(WordList(name: name, language: language, start: start, date: date, words: words))
+            }
+        } catch {
+            fatalError("Get Wordlist failed")
+        }
+    }
+
+    func getWords(folderName: String, wordlistName: String) -> [Word] {
+        let table = Table("wordlist\(wordlistName)")
+        var words = [Word]()
+
+        do {
+            for word in try db.prepare(table) {
+                let spell = word[WordTable.spell]
+                let imageNumber = word[WordTable.imageNumber]
+                let passCount = word[WordTable.passCount]
+                let type = WordType(rawValue: word[WordTable.type])!
+                let typeNumber = word[WordTable.typeNumber]
+                let tag = word[WordTable.tag]
+                let jsonData = tag.data(using: .utf8)
+                let tags = try jsonDecoder.decode([String].self, from: jsonData)
+                words.append(Word(spell: spell, imageNumber: imageNumber, passCount: passCount, type: type, typeNumber: typeNumber, tags: tags))
+            }
+        } catch {
+            fatalError("Get Word failed")
+        }
+    }
     
     /// Delete a folder from the main Folder table, remove the entire directory related to the folder
     /// - Parameters

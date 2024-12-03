@@ -7,10 +7,8 @@
 
 import Foundation
 
-struct Folder: Codable {
+struct Folder {
     var folderName: String
-    
-    @NotCoded
     var lists: [WordList]?
 }
 
