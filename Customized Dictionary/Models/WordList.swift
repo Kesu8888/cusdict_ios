@@ -7,13 +7,15 @@
 
 import Foundation
 import SwiftUI
+import SQLite
 
-struct WordList {
+class WordList {
     var name: String
-    let language: String
-    let parentDir: String
+    let language: Language
+    let dir: String
+    
     var logo: Image {
-        let logoPath = "\(parentDir)/logo.jpg"
+        let logoPath = "\(dir)/logo.jpg"
         if let uiImage = UIImage(contentsOfFile: logoPath) {
             return Image(uiImage: uiImage)
         } else {
@@ -21,7 +23,54 @@ struct WordList {
         }
     }
     
+    var passCount: Int64
     var start: Bool
     var date: Date
-    var words: [Word]?
+    
+    init(name: String, language: Language, dir: String, passCount: Int64, start: Bool, date: Date) {
+        self.name = name
+        self.language = language
+        self.dir = dir
+        self.passCount = passCount
+        self.start = start
+        self.date = date
+    }
+    
+    static let wordTypeMapping: [Language: Word.Type] = [
+        .english: EnglishWord.self,
+        //        .chinese: ChineseWord.self // to be implemented
+    ]
+    
+    /// Create a table in SQL database, the database columns are differed by the language variable
+    /// - Parameters
+    ///     - db: database connection object
+    ///     - folderName: name of the folder which contains the current wordlist
+    func createTableInSQL(db: Connection, folderName: String) {
+        guard let wordType = WordList.wordTypeMapping[language] else {
+            fatalError("Unsupported language: \(language)")
+        }
+        
+        wordType.createTable(in: db, folderName: folderName, wordlistName: name)
+    }
+    
+    func getWords(db: Connection, folderName: String) -> [Any] {
+        guard let wordType = WordList.wordTypeMapping[language] else {
+            fatalError("Unsupported language: \(language)")
+        }
+        
+        return wordType.getWord(from: db, folderName: folderName, wordlistName: name)
+    }
+}
+
+enum Language: String {
+    case english = "English"
+    case chinese = "Chinese"
+}
+
+struct WordListTable {
+    static let name = SQLite.Expression<String>("Name")
+    static let language = SQLite.Expression<String>("Language")
+    static let start = SQLite.Expression<Bool>("Start")
+    static let date = SQLite.Expression<String>("Date")
+    static let passCount = SQLite.Expression<Int64>("PassCount")
 }

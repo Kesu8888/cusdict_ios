@@ -17,9 +17,12 @@ extension Date {
         return formatter.string(from: self)
     }
     
-    static func fromISO8601String(_ string: String) -> Date? {
+    static func fromISO8601String(_ string: String) -> Date {
         let formatter = ISO8601DateFormatter()
-        return formatter.date(from: string)
+        guard let date = formatter.date(from: string) else {
+            fatalError("Invalid date string: \(string)")
+        }
+        return date
     }
 }
 
@@ -87,8 +90,7 @@ class DataConnector {
     ///     2. Create a folder Table in the SQL database
     ///     3. Create a folder directory in the mainFolder directory
     /// - Parameters
-    ///     - dataName: first column "name" of the record
-    ///     - data: second column "data" object of the record
+    ///     - f: The new folder object
     /// - Returns
     ///     - True: the record is added successfully
     ///     - False: the record may have duplicates in the database
@@ -117,13 +119,14 @@ class DataConnector {
     }
 
     func createFolderTableInSQL(tableName: String) {
-        let table = Table("Folder" + tableName)
+        let table = Table("folder" + tableName)
         do {
             try db.run(table.create { t in
                 t.column(WordListTable.name, primaryKey: true)
                 t.column(WordListTable.language)
                 t.column(WordListTable.start)
                 t.column(WordListTable.date)
+                t.column(WordListTable.passCount)
             })
         } catch {
             fatalError("Create Folder table failed")
@@ -131,6 +134,10 @@ class DataConnector {
     }
     
     /// Insert a wordlist record to a Folder table and create a table corresponds in sqlite database
+    /// - Steps
+    ///     1. Insert the record to the folder SQL table
+    ///     2. Create a Wordlist sql table
+    ///     3. create a corresponding directory
     /// - Parameters
     ///     - tableName: name of the Folder to add the record
     ///     - dataName: first column "name" of the record
@@ -142,7 +149,7 @@ class DataConnector {
        if insertRecordInFolder(f: f, w: w) == false {
            return false
        }
-       createWordlistTableInSQL(tableName: w.name)
+       w.createTableInSQL(db: db, folderName: f.folderName)
        createDir(path: "\(mainFolderDir)/\(f.folderName)/\(w.name)", checkExist: false)
        return true
     }
@@ -154,7 +161,8 @@ class DataConnector {
             try db.run(
                 table.insert(
                     WordListTable.name <- w.name,
-                    WordListTable.language <- w.language,
+                    WordListTable.language <- w.language.rawValue,
+                    WordListTable.passCount <- w.passCount,
                     WordListTable.start <- w.start,
                     WordListTable.date <- w.date.toISO8601String()
                 )
@@ -164,58 +172,18 @@ class DataConnector {
         }
         return true
     }
-
-    func createWordlistTableInSQL(tableName: String) {
-        let table = Table("Wordlist" + tableName)
-        do {
-            try db.run(table.create { t in
-                t.column(WordTable.spell, primaryKey: true)
-                t.column(WordTable.passCount)
-                t.column(WordTable.imageNumber)
-                t.column(WordTable.type)
-                t.column(WordTable.typeNumber)
-            })
-        } catch {
-            fatalError("Create Wordlist table failed")
-        }
-    }
     
     /// Insert a word to a wordlist
-    /// - Parameters
+    /// - Parameters 
     ///     - tableName: name of the wordlist table to add the record
     ///     - word: word object
     /// - Returns
     ///     - True: the record is added successfully
     ///     - False: the record may have duplicates in the database
-    func insertWordlist(f: Folder, w: WordList, W: Word, images: [UIImage], audioFileURL: URL) -> Bool {
-        if !insertRecordInWordlist(w: w, W: W) {
-            return false
-        }
+    func insertWordInWordlist(f: Folder, w: WordList, W: Word, images: [UIImage], audioFileURL: URL) -> Bool {
+        W.insertWord(to: db, folderName: f.folderName, wordlistName: w.name)
 
         copyImagesAndAudio(wordlistDirPath: "\(dir)/mainFolder/\(f.folderName)/\(w.name)", images: images, audioFileURL: audioFileURL)
-        return true
-    }
-    
-    private func insertRecordInWordlist(w: WordList, W: Word) -> Bool {
-        let table = Table("wordlist\(w.name)")
-        
-        do {
-            let jsonData = try jsonEncoder.encode(W.tags)
-            let jsonString = String(data: jsonData, encoding: .utf8)
-            try db.run(
-                table.insert(
-                    WordTable.spell <- W.spell,
-                    WordTable.imageNumber <- W.imageNumber,
-                    WordTable.passCount <- W.passCount,
-                    WordTable.type <- W.type.rawValue,
-                    WordTable.typeNumber <- W.typeNumber,
-                    // It means if jsonString is nil, use "" instead
-                    WordTable.tag <- jsonString ?? ""
-                )
-            )
-        } catch {
-            return false
-        }
         return true
     }
     
@@ -262,8 +230,16 @@ class DataConnector {
         } catch {
             fatalError("Get Folder failed")
         }
+        
+        return folders
     }
 
+    
+    /// get all Wordlists in a folder with their Words and return the Wordlist Array
+    /// - Parameters
+    ///    - folderName: the folder to get the wordlists from
+    /// - Throws
+    ///    - fatalError: if the get operation failed
     func getWordlist(folderName: String) -> [WordList] {
         let table = Table("folder\(folderName)")
         var wordlists = [WordList]()
@@ -271,36 +247,64 @@ class DataConnector {
         do {
             for wordlist in try db.prepare(table) {
                 let name = wordlist[WordListTable.name]
-                let language = wordlist[WordListTable.language]
+                let languageString = wordlist[WordListTable.language]
+                guard let language = Language(rawValue: languageString) else {
+                    fatalError("Invalid language value: \(languageString)")
+                }
                 let start = wordlist[WordListTable.start]
                 let date = Date.fromISO8601String(wordlist[WordListTable.date])
-                wordlists.append(WordList(name: name, language: language, start: start, date: date, words: words))
+                let passCount = wordlist[WordListTable.passCount]
+                wordlists.append(WordList(name: name, language: language, dir: "\(dir)/mainFolder/\(folderName)/\(name)", passCount: passCount, start: start, date: date))
             }
         } catch {
             fatalError("Get Wordlist failed")
         }
+        return wordlists
     }
 
-    func getWords(folderName: String, wordlistName: String) -> [Word] {
-        let table = Table("wordlist\(wordlistName)")
-        var words = [Word]()
-
+    
+    /// get all Words in a wordlist and return an array of Words
+    /// - Parameters
+    ///    - w: the wordlist to get the words from
+    /// - Throws
+    ///    - fatalError: if the get operation failed
+    /// - Returns
+    ///   - an array of Words
+    func getWords(folderName: String, W: WordList) -> [Any] {
+        return W.getWords(db: db, folderName: folderName)
+    }
+    
+    
+    /// Edit the name of a folder in the mainFolder table
+    /// - Steps
+    /// 1. Update the record in the mainFolder table in database
+    /// 2. Rename the folder directory
+    /// - Parameters
+    ///    - oldname: the name of the folder to be changed
+    ///    - newName: the new name of the folder
+    /// - Returns
+    ///    - True: the name is changed successfully
+    ///    - False: the name may have duplicates in the database
+    /// - Throws
+    ///   - fatalError: if the rename directory failed
+    func editFolderName(oldname: String, newName: String) -> Bool {
+        let table = Table("mainFolder")
+        
         do {
-            for word in try db.prepare(table) {
-                let spell = word[WordTable.spell]
-                let imageNumber = word[WordTable.imageNumber]
-                let passCount = word[WordTable.passCount]
-                let type = WordType(rawValue: word[WordTable.type])!
-                let typeNumber = word[WordTable.typeNumber]
-                let tag = word[WordTable.tag]
-                let jsonData = tag.data(using: .utf8)
-                let tags = try jsonDecoder.decode([String].self, from: jsonData)
-                words.append(Word(spell: spell, imageNumber: imageNumber, passCount: passCount, type: type, typeNumber: typeNumber, tags: tags))
-            }
+            let folder = table.filter(FolderTable.name == oldname)
+            try db.run(folder.update(FolderTable.name <- newName))
         } catch {
-            fatalError("Get Word failed")
+            return false
         }
+        
+        do {
+            try FileManager.default.moveItem(atPath: "\(mainFolderDir)/\(oldname)", toPath: "\(mainFolderDir)/\(newName)")
+        } catch {
+            fatalError("Cannot rename folder directory")
+        }
+        return true
     }
+    
     
     /// Delete a folder from the main Folder table, remove the entire directory related to the folder
     /// - Parameters
