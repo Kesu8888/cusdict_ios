@@ -66,12 +66,15 @@ class DataConnector {
             try db.run(mainFolder.create(ifNotExists: true) { t in
                 t.column(FolderTable.name, primaryKey: true)
             })
+
+            mainFolderDir = "\(dir)/mainFolder"
+            createDir(path: mainFolderDir, checkExist: true)
+
+            let defaultFolder = Folder(folderName: "Default")
+            insertFolderInMainFolder(f: defaultFolder)
         } catch {
             fatalError("Create mainFolder unsuccessfully")
         }
-        
-        mainFolderDir = "\(dir)/mainFolder"
-        createDir(path: mainFolderDir, checkExist: true)
     }
     
     
