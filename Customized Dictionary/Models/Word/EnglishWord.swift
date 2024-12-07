@@ -82,13 +82,13 @@ class EnglishWord: Word {
         return words
     }
     
-    // Remove original record and add the record again
     func insertWord(to db: Connection, folderName: String, wordlistName: String) {
         let table = Table("\(folderName)+\(wordlistName)")
-                
+        
         do {
             let jsonData = try JSONEncoder().encode(self.tags)
             let jsonString = String(data: jsonData, encoding: .utf8)
+            // Insert new record
             try db.run(table.insert(
                 EnglishWordTable.spell <- self.spell,
                 EnglishWordTable.passCount <- self.passCount,
@@ -98,25 +98,38 @@ class EnglishWord: Word {
                 EnglishWordTable.tag <- jsonString ?? ""
             ))
         } catch {
-            fatalError("Insert word fail \(error)")
+            fatalError("insert word failed: \(error)")
         }
     }
     
-    func editWord(to db: Connection, folderName: String, wordlistName: String) {
+    func editWord(in db: Connection, folderName: String, wordlistName: String) {
         let table = Table("\(folderName)+\(wordlistName)")
-        
+                
         do {
-            // If the insert fails due to a primary key constraint, update the existing record
-            let record = table.filter(EnglishWordTable.spell == self.spell && EnglishWordTable.type == self.type.rawValue && EnglishWordTable.typeNumber == self.typeNumber)
             let jsonData = try JSONEncoder().encode(self.tags)
             let jsonString = String(data: jsonData, encoding: .utf8)
+            
+            let record = table.filter(EnglishWordTable.spell == self.spell && EnglishWordTable.type == self.type.rawValue && EnglishWordTable.typeNumber == self.typeNumber)
+            
             try db.run(record.update(
                 EnglishWordTable.passCount <- self.passCount,
                 EnglishWordTable.imageNumber <- self.imageNumber,
                 EnglishWordTable.tag <- jsonString ?? ""
             ))
         } catch {
-            fatalError("Edit Word fail \(error)")
+            fatalError("edit word failed: \(error)")
+        }
+    }
+    
+    func deleteWord(in db: Connection, folderName: String, wordlistName: String) {
+        let table = Table("\(folderName)+\(wordlistName)")
+        
+        do {
+            let record = table.filter(EnglishWordTable.spell == self.spell && EnglishWordTable.type == self.type.rawValue && EnglishWordTable.typeNumber == self.typeNumber)
+            try db.run(record.delete())
+            print("Word deleted successfully")
+        } catch {
+            fatalError("delete word failed: \(error)")
         }
     }
 }

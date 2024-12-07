@@ -10,6 +10,7 @@ import SQLite
 import SwiftUI
 import UIKit
 
+
 // To convert date and string and back
 extension Date {
     func toISO8601String() -> String {
@@ -26,6 +27,7 @@ extension Date {
     }
 }
 
+
 // To downgrade the image
 extension UIImage {
     func resized(toWidth width: CGFloat) -> UIImage? {
@@ -36,10 +38,11 @@ extension UIImage {
         return UIGraphicsGetImageFromCurrentImageContext()
     }
     
-    func jpegData(compressionQuality: CGFloat) -> Data? {
+    func jpegDataWithQuality(_ compressionQuality: CGFloat) -> Data? {
         return self.jpegData(compressionQuality: compressionQuality)
     }
 }
+
 
 class DataConnector {
     private var db: Connection
@@ -51,6 +54,7 @@ class DataConnector {
         true
     ).first!
     private let mainFolderDir: String
+    
     
     init() {
         do {
@@ -70,6 +74,14 @@ class DataConnector {
         createDir(path: mainFolderDir, checkExist: true)
     }
     
+    
+    /// Create an empty directory at path
+    /// - Parameters
+    ///     - path: The path to create a directory
+    ///     - checkExist: True: check whether the directory already exist, False: assume the directory not exist
+    /// - Returns
+    ///     - True: The directory does not exist
+    ///     - False: The directory exist
     func createDir(path: String, checkExist: Bool) {
         if !FileManager.default.fileExists(atPath: path) {
             do {
@@ -83,6 +95,7 @@ class DataConnector {
             }
         }
     }
+    
     
     /// Insert a folder record to the mainFolder table
     /// - Steps
@@ -103,6 +116,7 @@ class DataConnector {
         return true
     }
 
+    
     private func insertRecordInMainfolder(f: Folder) -> Bool {
         let table = Table("mainFolder")
         
@@ -118,6 +132,7 @@ class DataConnector {
         return true
     }
 
+    
     func createFolderTableInSQL(tableName: String) {
         let table = Table("folder" + tableName)
         do {
@@ -132,6 +147,7 @@ class DataConnector {
             fatalError("Create Folder table failed")
         }
     }
+    
     
     /// Insert a wordlist record to a Folder table and create a table corresponds in sqlite database
     /// - Steps
@@ -154,6 +170,7 @@ class DataConnector {
        return true
     }
     
+    
     private func insertRecordInFolder(f: Folder, w: WordList) -> Bool {
         let table = Table("folder\(f.folderName)")
         
@@ -173,19 +190,24 @@ class DataConnector {
         return true
     }
     
+    
     /// Insert a word to a wordlist
     /// - Parameters 
-    ///     - tableName: name of the wordlist table to add the record
-    ///     - word: word object
+    ///     - f: Folder object that contains the wordlist
+    ///     - w: Wordlist object that contains the word
+    ///     - W: Word object
+    ///     - images: Images to be added to the word folder
+    ///     - audioFileURL: audio source to be added to the word folder
     /// - Returns
     ///     - True: the record is added successfully
     ///     - False: the record may have duplicates in the database
-    func insertWordInWordlist(f: Folder, w: WordList, W: Word, images: [UIImage], audioFileURL: URL) -> Bool {
+    func insertWordInWordlist(f: Folder, w: WordList, W: any Word, images: [UIImage], audioFileURL: URL) -> Bool {
         W.insertWord(to: db, folderName: f.folderName, wordlistName: w.name)
 
         copyImagesAndAudio(wordlistDirPath: "\(dir)/mainFolder/\(f.folderName)/\(w.name)", images: images, audioFileURL: audioFileURL)
         return true
     }
+    
     
     private func copyImagesAndAudio(wordlistDirPath: String, images: [UIImage], audioFileURL: URL) {
         let wordDir = "\(wordlistDirPath)"
@@ -204,7 +226,7 @@ class DataConnector {
             for (index, image) in images.enumerated() {
                 if let resizedImage = image.resized(toWidth: 300), // Resize to desired width
                    let imageData = resizedImage.jpegData(compressionQuality: 0.8) { // Convert to JPEG with compression quality
-                    let imageDestinationURL = URL(fileURLWithPath: "\(wordDir)/image\(index + 1).jpg")
+                    let imageDestinationURL = URL(fileURLWithPath: "\(wordDir)/image\(index).jpg")
                     try imageData.write(to: imageDestinationURL)
                 }
             }
@@ -212,7 +234,198 @@ class DataConnector {
             fatalError("Cannot copy images to word folder")
         }
     }
+    
+    
+    /// Add Images to a word, add it to the word folder and update it in the sql record
+    /// - Parameters
+    ///     - f: Folder object that contains the wordlist
+    ///     - w: Wordlist object that contains the word
+    ///     - W: Word object
+    ///     - addImages: the image objects to be added
+    func addImagesToWord(f: Folder, w: WordList, W: any Word, addImages: [UIImage]) {
+        var mutableW = W
+        let wordDir = "\(dir)/mainFolder/\(f.folderName)/\(w.name)"
+        var isDirectory: ObjCBool = false
+        
+        if FileManager.default.fileExists(atPath: wordDir, isDirectory: &isDirectory), isDirectory.boolValue {
+            // Directory exists, proceed to add images
+            do {
+                // Resize and copy images
+                for (index, image) in addImages.enumerated() {
+                    if let resizedImage = image.resized(toWidth: 300), // Resize to desired width
+                       let imageData = resizedImage.jpegDataWithQuality(0.8) { // Convert to JPEG with compression quality
+                        let imageDestinationURL = URL(fileURLWithPath: "\(wordDir)/image\(W.imageNumber + Int64(index)).jpg")
+                        try imageData.write(to: imageDestinationURL)
+                    }
+                }
+                // Update imageNumber
+                mutableW.imageNumber += Int64(addImages.count)
+            } catch {
+                fatalError("Cannot add images to word folder: \(error)")
+            }
+        } else {
+            fatalError("Word directory does not exist")
+        }
+        
+        mutableW.editWord(in: db, folderName: f.folderName, wordlistName: w.name)
+    }
+    
+    
+    /// Delete Images from a word, delete images with names  from the word folder and update in the sql record
+    /// - Parameters
+    ///     - f: Folder object that contains the wordlist
+    ///     - w: Wordlist object that contains the word
+    ///     - W: Word object
+    ///     - removeImagesIndex: A set object that contains the index of the images to be removed
+    func deleteImagesInWord(f: Folder, w: WordList, W: any Word, removeImagesIndex: Set<Int64>) {
+        var mutableW = W
+        let wordDir = "\(dir)/mainFolder/\(f.folderName)/\(w.name)"
+        var isDirectory: ObjCBool = false
+        
+        if FileManager.default.fileExists(atPath: wordDir, isDirectory: &isDirectory), isDirectory.boolValue {
+            // Directory exists, proceed to delete images
+            do {
+                var nextIndex = 0
+                let fileManager = FileManager.default
+                for i in 0..<W.imageNumber {
+                    let imageFilePath = "\(wordDir)/image\(i).jpg"
+                    if FileManager.default.fileExists(atPath: imageFilePath) {
+                        if removeImagesIndex.contains(i) {
+                            try fileManager.removeItem(atPath: imageFilePath)
+                        } else {
+                            let newImageFilePath = "\(wordDir)/image\(nextIndex).jpg"
+                            try fileManager.moveItem(atPath: imageFilePath, toPath: newImageFilePath)
+                            nextIndex += 1
+                        }
+                    }
+                }
+                mutableW.imageNumber = Int64(nextIndex)
+            } catch {
+                fatalError("Cannot delete images from word folder: \(error)")
+            }
+        } else {
+            fatalError("Word directory does not exist")
+        }
+        
+        W.editWord(in: db, folderName: f.folderName, wordlistName: w.name)
+    }
+    
+    
+    /// change the Audio of a word, replace the audio file in the word folder, noneed to update in the sql record
+    /// - Parameters
+    ///     - f: Folder object that contains the wordlist
+    ///     - w: Wordlist object that contains the word
+    ///     - W: Word object
+    ///     - audioFileURL: audioFileURL of the new audio source
+    func changeAudioInWord(f: Folder, w: WordList, W: any Word, audioFileURL: URL) {
+        let wordDir = "\(dir)/mainFolder/\(f.folderName)/\(w.name)"
+        var isDirectory: ObjCBool = false
+        
+        if FileManager.default.fileExists(atPath: wordDir, isDirectory: &isDirectory), isDirectory.boolValue {
+            // Directory exists, proceed to change audio
+            do {
+                let audioDestinationURL = URL(fileURLWithPath: "\(wordDir)/pron.mp3")
+                if FileManager.default.fileExists(atPath: audioDestinationURL.path) {
+                    try FileManager.default.removeItem(at: audioDestinationURL)
+                }
+                try FileManager.default.copyItem(at: audioFileURL, to: audioDestinationURL)
+            } catch {
+                fatalError("Cannot change audio in word folder: \(error)")
+            }
+        } else {
+            fatalError("Word directory does not exist")
+        }
+    }
+    
+    
+    /// Editing other attributes of a word that does not include images and audio
+    /// - Parameters
+    ///     - f: Folder object that contains the wordlist
+    ///     - w: Wordlist object that contains the word
+    ///     - W: Word object
+    func editWord(f: Folder, w: WordList, W: any Word) {
+        W.editWord(in: db, folderName: f.folderName, wordlistName: w.name)
+    }
+    
+    
+    /// Delete a folder from the mainFolder
+    /// - Warning: This method does not check for the number of existing wordlist in the folder, by right the user can only remove a folder when all of its wordlists have been removed
+    func deleteFolder(f: Folder) {
+        let folderDir = "\(dir)/mainFolder/\(f.folderName)"
+        var isDirectory: ObjCBool = false
+        
+        if FileManager.default.fileExists(atPath: folderDir, isDirectory: &isDirectory), isDirectory.boolValue {
+            // Directory exists, proceed to delete folder
+            do {
+                // Delete the folder and its contents from the file system
+                try FileManager.default.removeItem(atPath: folderDir)
+                
+                // Delete the folder record from the database
+                let table = Table("mainFolder")
+                let folderRecord = table.filter(FolderTable.name == f.folderName)
+                try db.run(folderRecord.delete())
+                
+                print("Folder deleted successfully")
+            } catch {
+                fatalError("Cannot delete folder: \(error)")
+            }
+        } else {
+            fatalError("Folder directory does not exist")
+        }
+    }
 
+    
+    func deleteWordlist(f: Folder, w: WordList) {
+        let wordlistDir = "\(dir)/mainFolder/\(f.folderName)/\(w.name)"
+        var isDirectory: ObjCBool = false
+        
+        if FileManager.default.fileExists(atPath: wordlistDir, isDirectory: &isDirectory), isDirectory.boolValue {
+            // Directory exists, proceed to delete wordlist
+            do {
+                // Delete the wordlist directory and its contents from the file system
+                try FileManager.default.removeItem(atPath: wordlistDir)
+                
+                // Delete the wordlist record from the folder table in the database
+                let table = Table("folder\(f.folderName)")
+                let wordlistRecord = table.filter(WordListTable.name == w.name)
+                try db.run(wordlistRecord.delete())
+                
+                // Drop the wordlist table
+                w.dropTableInSQL(db: db, folderName: f.folderName)
+                
+                print("Wordlist deleted successfully")
+            } catch {
+                fatalError("Cannot delete wordlist: \(error)")
+            }
+        } else {
+            fatalError("Wordlist directory does not exist")
+        }
+    }
+    
+    
+    func deleteWord(f: Folder, w: WordList, W: any Word) {
+        let wordDir = "\(dir)/mainFolder/\(f.folderName)/\(w.name)/\(W.spell)"
+        var isDirectory: ObjCBool = false
+        
+        if FileManager.default.fileExists(atPath: wordDir, isDirectory: &isDirectory), isDirectory.boolValue {
+            // Directory exists, proceed to delete word
+            do {
+                // Delete the word directory and its contents from the file system
+                try FileManager.default.removeItem(atPath: wordDir)
+                
+                // Remove the word record from the wordlist table
+                W.deleteWord(in: db, folderName: f.folderName, wordlistName: w.name)
+                
+                print("Word deleted successfully")
+            } catch {
+                fatalError("Cannot delete word: \(error)")
+            }
+        } else {
+            fatalError("Word directory does not exist")
+        }
+    }
+    
+    
     /// get all Folders in the mainFolder table with their Wordlists and return the folder Array
     /// - Returns
     ///     - True: the record is added successfully
@@ -272,62 +485,6 @@ class DataConnector {
     ///   - an array of Words
     func getWords(folderName: String, W: WordList) -> [Any] {
         return W.getWords(db: db, folderName: folderName)
-    }
-    
-    
-    /// Edit the name of a folder in the mainFolder table
-    /// - Steps
-    /// 1. Update the record in the mainFolder table in database
-    /// 2. Rename the folder directory
-    /// - Parameters
-    ///    - oldname: the name of the folder to be changed
-    ///    - newName: the new name of the folder
-    /// - Returns
-    ///    - True: the name is changed successfully
-    ///    - False: the name may have duplicates in the database
-    /// - Throws
-    ///   - fatalError: if the rename directory failed
-    func editFolderName(oldname: String, newName: String) -> Bool {
-        let table = Table("mainFolder")
-        
-        do {
-            let folder = table.filter(FolderTable.name == oldname)
-            try db.run(folder.update(FolderTable.name <- newName))
-        } catch {
-            return false
-        }
-        
-        do {
-            try FileManager.default.moveItem(atPath: "\(mainFolderDir)/\(oldname)", toPath: "\(mainFolderDir)/\(newName)")
-        } catch {
-            fatalError("Cannot rename folder directory")
-        }
-        return true
-    }
-    
-    
-    /// Delete a folder from the main Folder table, remove the entire directory related to the folder
-    /// - Parameters
-    ///     - folderName: name of the folder to be deleted from the mainFolder table
-    func deleteFolder(folderName: String) {
-        
-    }
-    
-    /// Delete a wordlist from a folder, remove the entire directory related to the wordlist
-    /// - Parameters
-    ///     - folderName: the folder to delete the wordlist from
-    ///     - wordlistName: the wordlist Name directory to delete
-    func deleteWordlist(folderName: String, wordlistName: String) {
-        
-    }
-    
-    /// Delete a word from a wordlist, remove the image and audio files in the related wordlist directory
-    /// - Parameters
-    ///     - folderName: the folder which contains the wordlist
-    ///     - wordlistName: the wordlist Name directory to delete
-    ///     - word:
-    func deleteWord(folderName: String, wordlistName: String, word: Word) {
-        
     }
     
     deinit {

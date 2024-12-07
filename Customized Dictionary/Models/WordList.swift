@@ -36,7 +36,7 @@ class WordList {
         self.date = date
     }
     
-    static let wordTypeMapping: [Language: Word.Type] = [
+    static let wordTypeMapping: [Language: any Word.Type] = [
         .english: EnglishWord.self,
         //        .chinese: ChineseWord.self // to be implemented
     ]
@@ -51,6 +51,18 @@ class WordList {
         }
         
         wordType.createTable(in: db, folderName: folderName, wordlistName: name)
+    }
+
+    func dropTableInSQL(db: Connection, folderName: String) {
+        let tableName = "\(folderName)+\(name)"
+        let table = Table(tableName)
+        
+        do {
+            try db.run(table.drop(ifExists: true))
+            print("Table \(tableName) deleted successfully")
+        } catch {
+            fatalError("Cannot delete table \(tableName): \(error)")
+        }
     }
     
     func getWords(db: Connection, folderName: String) -> [Any] {
