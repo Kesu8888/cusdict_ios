@@ -46,15 +46,11 @@ extension UIImage {
 
 class DataConnector {
     private var db: Connection
-    private var jsonEncoder = JSONEncoder()
-    private var jsonDecoder = JSONDecoder()
     private let dir = NSSearchPathForDirectoriesInDomains(
         .documentDirectory,
         .userDomainMask,
         true
-    ).first!
-    private let mainFolderDir: String
-    
+    ).first!    
     
     init() {
         do {
@@ -67,7 +63,7 @@ class DataConnector {
                 t.column(FolderTable.name, primaryKey: true)
             })
 
-            mainFolderDir = "\(dir)/mainFolder"
+            let mainFolderDir = "\(dir)/mainFolder"
             createDir(path: mainFolderDir, checkExist: true)
 
             let defaultFolder = Folder(folderName: "Default")

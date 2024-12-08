@@ -1,22 +1,30 @@
-//
-//  ModelData.swift
-//  Customized Dictionary
-//
-//  Created by Fu Kaiqi on 2024/11/19.
-//
-
 import Foundation
 
-@Observable
-class ModelData {
-    var mainFolder: Folder
-    var curFolder: Folder?
-    var curWordlist: WordList?
-    var curWord: Word?
-    var dataConnector: DataConnector
+class ModelData: ObservableObject {
+    @Published var mainFolder: [Folder]
+    @Published var currentSelectedFolder: Folder?
+    @Published var currentSelectedWordlist: WordList?
+    @Published var currentSelectedWord: Word?
+    
+    private let dataConnector: DataConnector
+    
+    init(dataConnector: DataConnector) {
+        self.dataConnector = dataConnector
+        self.mainFolder = dataConnector.getFolders()
+        self.currentSelectedFolder = nil
+        self.currentSelectedWordlist = nil
+        self.currentSelectedWord = nil
+    }
+    
+    func addFolder(folder: Folder) {
+        dataConnector.insertFolderInMainFolder(folder: folder)
+        mainFolder.append(folder)
+        currentSelectedFolder = folder
+    }
 
-    init() {
-        dataConnector = DataConnector()
-        curFolder = dataConnector.getMainFolder()
+    func addWordlist(wordlist: WordList) {
+        dataConnector.insertWordlistInFolder(wordlist: wordlist, folder: currentSelectedFolder!)
+        currentSelectedFolder!.wordlists.append(wordlist)
+        currentSelectedWordlist = wordlist
     }
 }
