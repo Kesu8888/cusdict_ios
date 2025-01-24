@@ -8,9 +8,18 @@
 import Foundation
 import SQLite
 
-struct Folder {
-    var folderName: String
-    var lists: [WordList]?
+struct Folder: Identifiable, Equatable {
+    var id: String //folderName
+    var lists: [WordList] = []
+    
+    /// Init from sqlTable
+    init(id: String) {
+        self.id = id
+    }
+    
+    static func ==(lhs: Folder, rhs: Folder) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 struct FolderTable {

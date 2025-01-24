@@ -9,68 +9,74 @@ import Foundation
 import SwiftUI
 import SQLite
 
-class WordList {
+class WordList: Identifiable {
+    var id: String
     var name: String
     let language: Language
-    let dir: String
+    var dir: String
     
     var logo: Image {
-        let logoPath = "\(dir)/logo.jpg"
-        if let uiImage = UIImage(contentsOfFile: logoPath) {
-            return Image(uiImage: uiImage)
+        if dir == "none" {
+            return Image("Words")
         } else {
-            return Image(systemName: "photo")
+            let logoPath = "\(dir)/logo.jpg"
+            return Image(logoPath)
         }
     }
     
     var passCount: Int64
     var start: Bool
     var date: Date
+    var wordCount: Int64
     
-    init(name: String, language: Language, dir: String, passCount: Int64, start: Bool, date: Date) {
+    /// Init from Database, require full parameters
+    init(id: String, name: String, language: Language, dir: String, passCount: Int64, start: Bool, date: Date, wordCount: Int64) {
+        self.id = id
         self.name = name
         self.language = language
         self.dir = dir
         self.passCount = passCount
         self.start = start
         self.date = date
-    }
-    
-    static let wordTypeMapping: [Language: any Word.Type] = [
-        .english: EnglishWord.self,
-        //        .chinese: ChineseWord.self // to be implemented
-    ]
-    
-    /// Create a table in SQL database, the database columns are differed by the language variable
-    /// - Parameters
-    ///     - db: database connection object
-    ///     - folderName: name of the folder which contains the current wordlist
-    func createTableInSQL(db: Connection, folderName: String) {
-        guard let wordType = WordList.wordTypeMapping[language] else {
-            fatalError("Unsupported language: \(language)")
-        }
-        
-        wordType.createTable(in: db, folderName: folderName, wordlistName: name)
+        self.wordCount = wordCount
     }
 
-    func dropTableInSQL(db: Connection, folderName: String) {
-        let tableName = "\(folderName)+\(name)"
-        let table = Table(tableName)
-        
-        do {
-            try db.run(table.drop(ifExists: true))
-            print("Table \(tableName) deleted successfully")
-        } catch {
-            fatalError("Cannot delete table \(tableName): \(error)")
-        }
+    /// Init from Wordlist Creation, require partial parameters
+    init(name: String, language: Language, passCount: Int64, start: Bool) {
+        self.id = WordList.randomID(name: name)
+        self.name = name
+        self.language = language
+        self.dir = "none"
+        self.passCount = passCount
+        self.start = start
+        self.date = Date()
+        self.wordCount = 0
     }
     
-    func getWords(db: Connection, folderName: String) -> [Any] {
-        guard let wordType = WordList.wordTypeMapping[language] else {
-            fatalError("Unsupported language: \(language)")
+    static func randomID(name: String) -> String {
+        let randomInt = Int32.random(in: Int32.min...Int32.max)
+        let hexString = String(format: "%08X", randomInt)
+        return "\(name)\(hexString)"
+    }
+}
+
+extension WordList {
+    func createTable(in db: Connection, folderName: String) {
+        let table = Table("\(folderName)+\(self.id)")
+        do {
+            try db.run(table.create { t in
+                t.column(WordTable.spell)
+                t.column(WordTable.type)
+                t.column(WordTable.meaning)
+                t.column(WordTable.meanID)
+                t.column(WordTable.passCount)
+                t.column(WordTable.imageNumber)
+                t.column(WordTable.tags)
+                t.primaryKey(WordTable.meanID, WordTable.type, WordTable.meaning)
+            })
+        } catch {
+            fatalError("createTable failed")
         }
-        
-        return wordType.getWord(from: db, folderName: folderName, wordlistName: name)
     }
 }
 
@@ -80,9 +86,11 @@ enum Language: String {
 }
 
 struct WordListTable {
+    static let id = SQLite.Expression<String>("ID") // Primary Key, Folder Name, Computed as name + randomHashcode
     static let name = SQLite.Expression<String>("Name")
     static let language = SQLite.Expression<String>("Language")
+    static let passCount = SQLite.Expression<Int64>("PassCount")
     static let start = SQLite.Expression<Bool>("Start")
     static let date = SQLite.Expression<String>("Date")
-    static let passCount = SQLite.Expression<Int64>("PassCount")
+    static let wordCount = SQLite.Expression<Int64>("WordCount")
 }

@@ -1,0 +1,14 @@
+adj.
+cpb. //sorted
+cpt. //sorted
+spl. //sorted
+vb.adj. //sorted
+vp.adj. //sorted
+adv. //sorted
+conj. //sorted
+interj. //sorted
+n. //sorted
+prep. //sorted
+pron. //sorted
+v.
+vb.n. //sorted
