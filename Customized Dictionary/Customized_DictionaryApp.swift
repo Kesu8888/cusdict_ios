@@ -1,7 +1,7 @@
 //
 //  Customized_DictionaryApp.swift
 //  Customized Dictionary
-//
+// 
 //  Created by Fu Kaiqi on 2024/11/19.
 //
 

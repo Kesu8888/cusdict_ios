@@ -1,0 +1,198 @@
+{
+  "" : {
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Customized Dictionary-master.dia",
+    "emit-module-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Customized Dictionary-master-emit-module.d",
+    "emit-module-diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Customized Dictionary-master-emit-module.dia",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Customized Dictionary-master.swiftdeps"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/ContentView.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ContentView.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ContentView.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ContentView.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ContentView.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ContentView.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ContentView.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ContentView.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ContentView~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Customized_DictionaryApp.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Customized_DictionaryApp.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Customized_DictionaryApp.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Customized_DictionaryApp.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Customized_DictionaryApp.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Customized_DictionaryApp.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Customized_DictionaryApp.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Customized_DictionaryApp.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Customized_DictionaryApp~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Helpers/Fonts.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Fonts.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Fonts.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Fonts.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Fonts.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Fonts.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Fonts.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Fonts.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Fonts~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Models/DataConnector.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/DataConnector.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/DataConnector.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/DataConnector.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/DataConnector.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/DataConnector.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/DataConnector.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/DataConnector.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/DataConnector~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Models/Folder.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Folder.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Folder.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Folder.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Folder.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Folder.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Folder.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Folder.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Folder~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Models/ModelData.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ModelData.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ModelData.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ModelData.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ModelData.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ModelData.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ModelData.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ModelData.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/ModelData~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Models/Word/EnglishWord.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/EnglishWord.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/EnglishWord.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/EnglishWord.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/EnglishWord.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/EnglishWord.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/EnglishWord.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/EnglishWord.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/EnglishWord~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Models/Word/Word Protocol.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Word Protocol.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Word Protocol.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Word Protocol.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Word Protocol.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Word Protocol.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Word Protocol.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Word Protocol.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Word Protocol~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Models/WordList.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordList.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordList.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordList.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordList.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordList.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordList.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordList.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordList~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Views/CustomTabBar/CustomTabBar.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/CustomTabBar.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/CustomTabBar.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/CustomTabBar.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/CustomTabBar.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/CustomTabBar.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/CustomTabBar.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/CustomTabBar.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/CustomTabBar~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Views/MainFolderView/FolderColumn.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderColumn.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderColumn.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderColumn.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderColumn.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderColumn.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderColumn.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderColumn.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderColumn~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Views/MainFolderView/FolderList.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderList.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderList.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderList.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderList.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderList.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderList.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderList.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderList~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Views/MainFolderView/FolderTopBar.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderTopBar.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderTopBar.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderTopBar.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderTopBar.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderTopBar.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderTopBar.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderTopBar.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/FolderTopBar~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Views/MainFolderView/MainFolderView.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/MainFolderView.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/MainFolderView.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/MainFolderView.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/MainFolderView.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/MainFolderView.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/MainFolderView.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/MainFolderView.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/MainFolderView~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Views/Testing/Main.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Main.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Main.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Main.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Main.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Main.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Main.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Main.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/Main~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Views/WordListView/WordListView.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordListView.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordListView.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordListView.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordListView.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordListView.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordListView.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordListView.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordListView~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Views/WordListView/WordlistColumn.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistColumn.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistColumn.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistColumn.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistColumn.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistColumn.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistColumn.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistColumn.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistColumn~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/Customized Dictionary/Views/WordListView/WordlistList.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistList.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistList.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistList.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistList.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistList.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistList.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistList.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/WordlistList~partial.swiftmodule"
+  },
+  "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Volumes/Extra Data/git repository/Customized Dictionary/build/Customized Dictionary.build/Debug-iphonesimulator/Customized Dictionary.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}
