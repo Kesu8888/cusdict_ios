@@ -224,7 +224,7 @@ struct EWfillEditor: View {
                                 coverArea: coverArea
                             ).toQuestionData()
                             
-                            var qn = Question(
+                            let qn = Question(
                                 bindedMeaning: bindedMeaning,
                                 questionType: .fill,
                                 questionData: questionData,

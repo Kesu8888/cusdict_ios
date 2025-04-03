@@ -21,7 +21,7 @@ struct EnglishWord: Word, Identifiable {
     var lemmaVar: Int64
     var range: String
     var transforms: [EnglishWordTrans]
-    var targetTrans: EnglishWordTrans? // used by editWord
+    var targetTrans: [EnglishWordTrans] = [] // used by editWord and by search En_word(When searching a word, the wordBase will automatically search for all the lemma words related to that word, and the targetTrans[0] will be the word that is searched by the user)
     var editFunction: EnglishWordEditFunction = .none
     
     private static func trans_path(WordListDir: String, trans: EnglishWordTrans, dbLemma: String) -> String {
@@ -39,14 +39,14 @@ struct EnglishWord: Word, Identifiable {
 
         // Get rows lemma, word, range from the table
         var words: [EnglishWord] = []
-        var word = EnglishWord(lemma: "", lemmaVar: 0, range: "", transforms: [])
+        var word = EnglishWord(lemma: "", lemmaVar: 0, range: "", transforms: [], targetTrans: [])
 
         do {
             let query = table.select(EnglishWordTable.lemma, EnglishWordTable.lemmaVar, EnglishWordTable.word, EnglishWordTable.range).order(EnglishWordTable.lemma, EnglishWordTable.lemmaVar)
 
             for w in try db.prepare(query) {
 
-                var wordTrans = EnglishWordTrans(
+                let wordTrans = EnglishWordTrans(
                     lemma: w[EnglishWordTable.lemma],
                     lemmaVar: w[EnglishWordTable.lemmaVar],
                     word: w[EnglishWordTable.word],
@@ -58,7 +58,7 @@ struct EnglishWord: Word, Identifiable {
                     if word.transforms.count > 0 {
                         words.append(word)
                     }
-                    words.append(EnglishWord(lemma: wordTrans.word + "+", lemmaVar: wordTrans.lemmaVar, range: wordTrans.range, transforms: [wordTrans]))
+                    words.append(EnglishWord(lemma: wordTrans.word + "+", lemmaVar: wordTrans.lemmaVar, range: wordTrans.range, transforms: [wordTrans], targetTrans: []))
                     word.transforms.removeAll()
                     continue
                 }
@@ -69,7 +69,7 @@ struct EnglishWord: Word, Identifiable {
                         word.lemmaVar = word.transforms[0].lemmaVar
                         words.append(word)
                     }
-                    word = EnglishWord(lemma: wordTrans.lemma, lemmaVar: wordTrans.lemmaVar, range: wordTrans.range, transforms: [wordTrans])
+                    word = EnglishWord(lemma: wordTrans.lemma, lemmaVar: wordTrans.lemmaVar, range: wordTrans.range, transforms: [wordTrans], targetTrans: [])
                     continue
                 }
                 
@@ -212,6 +212,7 @@ struct EnglishWord: Word, Identifiable {
     
     // EditWord will update all the trans in self.transforms, words that has no changed should not be in the transforms
     func WordList_EditWord(db: Connection, table: SQLite.Table, WordListDir: String) {
+        let dbLemma = transforms[0].lemma
         do {
             // Fetch all existing records for the current lemma and lemmaVar
             let existingRecords = try db.prepare(
@@ -220,9 +221,6 @@ struct EnglishWord: Word, Identifiable {
                 (word: row[EnglishWordTable.word], row: row)
             }
             let existingWords = Set(existingRecords.map { $0.word })
-            
-            // Prepare a dictionary for quick lookup of existing rows
-            let existingRecordsDict = Dictionary(uniqueKeysWithValues: existingRecords)
             
             // Iterate over all transforms
             for transform in self.transforms {
@@ -234,21 +232,19 @@ struct EnglishWord: Word, Identifiable {
 
                 if existingWords.contains(transform.word) {
                     // Update the existing record
-                    if let existingRow = existingRecordsDict[transform.word] {
-                        let wordRecord = table.filter(
-                            EnglishWordTable.lemma == dbLemma &&
-                            EnglishWordTable.lemmaVar == self.lemmaVar &&
-                            EnglishWordTable.word == transform.word
-                        )
-                        try db.run(wordRecord.update(
-                            EnglishWordTable.phonetic <- transform.phonetic,
-                            EnglishWordTable.exchange <- transform.exchange.joined(separator: "/"),
-                            EnglishWordTable.passCount <- transform.passCount,
-                            EnglishWordTable.meaning <- Meaning.packMeanings(meanings: transform.meaning),
-                            EnglishWordTable.files <- transform.filesPack(),
-                            EnglishWordTable.question <- transform.packQuestion()
-                        ))
-                    }
+                    let wordRecord = table.filter(
+                        EnglishWordTable.lemma == dbLemma &&
+                        EnglishWordTable.lemmaVar == self.lemmaVar &&
+                        EnglishWordTable.word == transform.word
+                    )
+                    try db.run(wordRecord.update(
+                        EnglishWordTable.phonetic <- transform.phonetic,
+                        EnglishWordTable.exchange <- transform.exchange.joined(separator: "/"),
+                        EnglishWordTable.passCount <- transform.passCount,
+                        EnglishWordTable.meaning <- Meaning.packMeanings(meanings: transform.meaning),
+                        EnglishWordTable.files <- transform.filesPack(),
+                        EnglishWordTable.question <- transform.packQuestion()
+                    ))
                 } else {
                     // Insert the new record
                     try db.run(table.insert(

@@ -11,7 +11,7 @@ struct play_fill: View {
     let questionString: String
     let fill: fill_question
     let fontSize = UIScreen.main.bounds.width * 0.05
-    let image: FileObject?
+    let image: UIImage?
     let maximumChars = 10
     let charCover: [Int]
     private var charArray: [Character]
@@ -33,7 +33,12 @@ struct play_fill: View {
     init(question: Question) {
         fill = fill_question(questionData: question.questionData)
         questionString = question.questionString
-        image = question.file
+        if question.file != nil {
+            image = FileContent.image(question.file!.file)
+        } else {
+            image = nil
+        }
+//        image = question.file? ??
         userInput = Array(repeating: "", count: fill.answer.id.count)
         charCover = fill_question.coverChar(question: fill)
         charArray = Array(fill.answer.id)
@@ -55,6 +60,10 @@ struct play_fill: View {
                 Spacer()
             }
             .font(CustomFont.SFPro_Rounded(.semibold, size: fontSize))
+            
+            if image != nil {
+                
+            }
             
             let sizeChange: CGFloat = charArray.count <= maximumChars ? 1 : (CGFloat(charArray.count) / CGFloat(maximumChars)) * 0.95
             let charFontSize = fontSize / sizeChange

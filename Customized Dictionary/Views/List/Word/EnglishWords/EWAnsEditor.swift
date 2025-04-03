@@ -173,7 +173,7 @@ struct EWAnsEditor: View {
                         let bindedMeaning = meanings[bindedMeaningIndex].hashValue
                         let questionData = answer_question(answers: answers).toQuestionData()
                         
-                        var qn = Question(
+                        let qn = Question(
                             bindedMeaning: bindedMeaning,
                             questionType: .answer,
                             questionData: questionData,

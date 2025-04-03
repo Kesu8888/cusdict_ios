@@ -50,7 +50,7 @@ struct en_word {
     
     static func searchLemma(db: Connection, lan: Translation_Language, word: EnglishWordTrans) -> EnglishWord {
         if word.lemma.isEmpty {
-            return EnglishWord(lemma: word.word + "+", lemmaVar: word.lemmaVar, range: word.range, transforms: [word], targetTrans: word)
+            return EnglishWord(lemma: word.word + "+", lemmaVar: word.lemmaVar, range: word.range, transforms: [word], targetTrans: [word])
         }
         
         do {
@@ -60,7 +60,7 @@ struct en_word {
             for row in rows {
                 words.append(EnglishWordTrans(row: row))
             }
-            return EnglishWord(lemma: word.lemma, lemmaVar: word.lemmaVar, range: word.range, transforms: words, targetTrans: word)
+            return EnglishWord(lemma: word.lemma, lemmaVar: word.lemmaVar, range: word.range, transforms: words, targetTrans: [word])
         } catch {
             fatalError("Failed to search lemma: \(error)")
         }
@@ -75,8 +75,8 @@ struct en_word {
         
         do {
             var englishWords: [EnglishWord] = []
-            let englishWordReset = EnglishWord(lemma: "", lemmaVar: 0, range: "", transforms: [])
-            var englishWord = EnglishWord(lemma: "", lemmaVar: 0, range: "", transforms: [])
+            let englishWordReset = EnglishWord(lemma: "", lemmaVar: 0, range: "", transforms: [], targetTrans: [])
+            var englishWord = EnglishWord(lemma: "", lemmaVar: 0, range: "", transforms: [], targetTrans: [])
             for row in try db.prepare(query) {
                 var wordBaseWord = EnglishWordTrans(row: row)
                 wordBaseWord.range = wordRange.getRange(word: wordBaseWord.word)

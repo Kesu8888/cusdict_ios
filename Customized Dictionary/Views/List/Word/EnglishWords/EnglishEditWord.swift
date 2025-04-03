@@ -15,7 +15,7 @@ enum editWordFunction {
 }
 struct EnglishEditWord: View {
     @Environment(\.dismiss) private var dismiss
-    @State var w: EnglishWord
+    let wOrigin: EnglishWord
     var doneAction: (editWordFunction, EnglishWord) -> Void
     @State private var transforms: [EnglishWordTrans]
     @State private var currentTransWord: String
@@ -30,7 +30,7 @@ struct EnglishEditWord: View {
     @State private var deleteWord = false
     
     init(w: EnglishWord, action: @escaping (editWordFunction, EnglishWord) -> Void) {
-        self.w = w
+        self.wOrigin = w
         self.doneAction = action
         self.transforms = w.transforms
         currentTransWord = w.transforms[0].word
@@ -218,6 +218,7 @@ struct EnglishEditWord: View {
             }
             .alert("", isPresented: $deleteWord, actions: {
                 Button("Delete") {
+                    doneAction(.delete, wOrigin)
                     dismiss()
                 }
                 Button("Cancel") {

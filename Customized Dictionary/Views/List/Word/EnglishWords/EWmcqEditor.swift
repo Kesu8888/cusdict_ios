@@ -136,10 +136,6 @@ struct EWmcqEditor: View {
                 // image section
                 ImageEditor(image: $file)
                 
-                Section {
-                    Text("\(choices.count)")
-                }
-                
                 // answer section
                 Section {
                     HideChevronNavigationLink(destination: ans_expAdder(answers: $choices), content: {
@@ -224,7 +220,7 @@ struct EWmcqEditor: View {
                                 choices: choices
                             ).toQuestionData()
                             
-                            var qn = Question(
+                            let qn = Question(
                                 bindedMeaning: bindedMeaning,
                                 questionType: .mcq,
                                 questionData: questionData,

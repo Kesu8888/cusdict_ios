@@ -166,7 +166,7 @@ struct ImageEditor: View {
         Section {
             HStack(spacing: 0) {
                 PhotosPicker(selection: $imagePicker.imageSelection, label: {
-                    Text(imagePicker.image == nil ? "Add Image" : "")
+                    Text(image == nil ? "Add Image" : "")
                         .foregroundStyle(Color.blue)
                 })
 

@@ -285,7 +285,6 @@ class DataConnector {
         do {
             for W in try db.prepare(table) {
                 let id = W[WordListTable.id]
-                let ranges = W[WordListTable.ranges].split(separator: "&").map { String($0) }
                 let wordList = WordList(
                     id: id,
                     name: W[WordListTable.name],

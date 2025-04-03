@@ -23,16 +23,16 @@ struct en_cn_ResultWord: View {
     
     init(word: EnglishWord, modelData: ModelData) {
         self.word = word
-        self.targetWord = word.targetTrans!
+        self.targetWord = word.targetTrans[0]
         self.modelData = modelData
-        self._selectedMeaning = State(initialValue: Set(0..<word.targetTrans!.meaning.count))
+        self._selectedMeaning = State(initialValue: Set(0..<word.targetTrans[0].meaning.count))
     }
     
     var body: some View {
         ZStack(alignment: .center) {
             VStack(alignment: .center, spacing: rowHeight * 0.2) {
                 HStack {
-                    Text(word.targetTrans!.word)
+                    Text(word.targetTrans[0].word)
                         .font(CustomFont.SFPro_Rounded(.regular, size: rowHeight * 0.8))
                     Spacer()
                 }

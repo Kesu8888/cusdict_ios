@@ -18,6 +18,7 @@ struct EnglishWordPage: View {
     
     @State private var words: [EnglishWord]
     @State private var showWord = false
+    // This word is used by EnglishEditWord and will be set to the word to be edited when pass to EnglishEditWord
     @State private var editingWord: EnglishWord = EnglishWord(lemma: "", lemmaVar: 0, range: "", transforms: [])
     
     init(modelData: ModelData) {
@@ -111,6 +112,7 @@ struct EnglishWordPage: View {
                 }
         })
     }
+    
     // function(.delete): delete the word w from words, allWords, wordsArray, Database
     // function(.edit): edit the word w in words, allWords, Database
     // function(.add): add the word w in words, allWords, Database
