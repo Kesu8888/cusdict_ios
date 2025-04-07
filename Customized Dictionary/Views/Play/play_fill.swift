@@ -11,7 +11,7 @@ struct play_fill: View {
     let questionString: String
     let fill: fill_question
     let fontSize = UIScreen.main.bounds.width * 0.05
-    let image: UIImage?
+    let image: FileObject?
     let maximumChars = 10
     let charCover: [Int]
     private var charArray: [Character]
@@ -33,12 +33,7 @@ struct play_fill: View {
     init(question: Question) {
         fill = fill_question(questionData: question.questionData)
         questionString = question.questionString
-        if question.file != nil {
-            image = FileContent.image(question.file!.file)
-        } else {
-            image = nil
-        }
-//        image = question.file? ??
+        image = question.file
         userInput = Array(repeating: "", count: fill.answer.id.count)
         charCover = fill_question.coverChar(question: fill)
         charArray = Array(fill.answer.id)
@@ -61,81 +56,54 @@ struct play_fill: View {
             }
             .font(CustomFont.SFPro_Rounded(.semibold, size: fontSize))
             
-            if image != nil {
-                
-            }
+//            if let image = image, case let .image(uiImage) = image.file {
+//                displayImageView(
+//                    displayImage: uiImage,
+//                    height: UIScreen.main.bounds.height * 0.2,
+//                    ratio: .wider
+//                )
+//            }
             
-            let sizeChange: CGFloat = charArray.count <= maximumChars ? 1 : (CGFloat(charArray.count) / CGFloat(maximumChars)) * 0.95
-            let charFontSize = fontSize / sizeChange
-            let charSpacing = UIScreen.main.bounds.width * 0.02 / sizeChange
-            let charWidth = charFontSize * 1.5
-            let charHeight = charFontSize * 2
-            let coverChar = fill_question.coverChar(question: fill)
-            // fill question HStack
-            HStack(spacing: charSpacing) {
-                Spacer()
-                ForEach(charArray.indices, id: \.self) { charIndex in
-                    if coverChar.contains(charIndex) {
-                        // fill Char TextField
-                        TextField("", text: $userInput[charIndex])
-                            .focused($focusedField, equals: charIndex)
-                            .onChange(of: userInput[charIndex], {
-                                if userInput[charIndex].isEmpty {
-                                    let cur_index = charCover.firstIndex(of: charIndex) ?? 0
-                                    if cur_index == 0 {
-                                        focusedField = charIndex
-                                    } else {
-                                        focusedField = charCover[cur_index - 1]
-                                    }
-                                } else {
-                                    let cur_index = charCover.firstIndex(of: charIndex) ?? 0
-                                    if cur_index == charCover.count - 1 {
-                                        focusedField = nil
-                                    } else {
-                                        focusedField = charCover[cur_index + 1]
-                                    }
-                                }
-                            })
-                            .font(CustomFont.SFPro_Rounded(.semibold, size: charFontSize))
-                            .frame(width: charWidth, height: charHeight)
-                            .background(charColor[charIndex])
-                            .cornerRadius(8)
-                            .foregroundStyle(Color.white)
-                            .multilineTextAlignment(.center)
-                            .tag(charIndex)
-                            .tint(Color.white)
-                    } else {
-                        Text("\(charArray[charIndex])")
-                            .font(CustomFont.SFPro_Rounded(.semibold, size: charFontSize))
-                    }
-                }
-                Spacer()
-            }
-            .padding(.vertical)
-            
-            if answerd && !answerCorrect {
-                HStack(spacing: charSpacing) {
-                    Spacer()
-                    ForEach(charArray.indices, id: \.self) { charIndex in
-                        if coverChar.contains(charIndex) {
-                            // fill Char TextField
-                            Text("\(charArray[charIndex])")
-                                .font(CustomFont.SFPro_Rounded(.semibold, size: charFontSize))
-                                .frame(width: charWidth, height: charHeight)
-                                .background((Color.green))
-                                .cornerRadius(8)
-                                .foregroundStyle(Color.white)
-                                .multilineTextAlignment(.center)
-                                .tag(charIndex)
-                                .tint(Color.white)
-                        } else {
-                            Text("\(charArray[charIndex])")
-                                .font(CustomFont.SFPro_Rounded(.semibold, size: charFontSize))
-                        }
-                    }
-                    Spacer()
-                }
-            }
+//            let sizeChange: CGFloat = charArray.count <= maximumChars ? 1 : (CGFloat(charArray.count) / CGFloat(maximumChars)) * 0.95
+//            let charFontSize = fontSize / sizeChange
+//            let charSpacing = UIScreen.main.bounds.width * 0.02 / sizeChange
+//            let charWidth = charFontSize * 1.5
+//            let charHeight = charFontSize * 2
+//            let coverChar = fill_question.coverChar(question: fill)
+//            // fill question HStack
+//            HStack(spacing: charSpacing) {
+//                Spacer()
+//                ForEach(charArray.indices, id: \.self) { charIndex in
+//                    Text("\(charArray[charIndex])")
+//                        .font(CustomFont.SFPro_Rounded(.semibold, size: charFontSize))
+//                }
+//                Spacer()
+//            }
+//            .padding(.vertical)
+//            
+//            if answerd && !answerCorrect {
+//                HStack(spacing: charSpacing) {
+//                    Spacer()
+//                    ForEach(charArray.indices, id: \.self) { charIndex in
+//                        if coverChar.contains(charIndex) {
+//                            // fill Char TextField
+//                            Text("\(charArray[charIndex])")
+//                                .font(CustomFont.SFPro_Rounded(.semibold, size: charFontSize))
+//                                .frame(width: charWidth, height: charHeight)
+//                                .background((Color.green))
+//                                .cornerRadius(8)
+//                                .foregroundStyle(Color.white)
+//                                .multilineTextAlignment(.center)
+//                                .tag(charIndex)
+//                                .tint(Color.white)
+//                        } else {
+//                            Text("\(charArray[charIndex])")
+//                                .font(CustomFont.SFPro_Rounded(.semibold, size: charFontSize))
+//                        }
+//                    }
+//                    Spacer()
+//                }
+//            }
             
             Spacer()
             Text(errorMsg)
@@ -212,6 +180,118 @@ struct play_fill: View {
     }
 }
 
+fileprivate struct fillText: View {
+    var inputTextArray: [Character] {
+        return Array(inputText)
+    }
+    @State var answer: [Character] = ["A", "p", "p", "l", "e"]
+    @State var blankChar: [Int] = [1, 2]
+    @State var inputText: String = "P"
+    @FocusState var isTyping: Bool
+    @Binding var isAnswered: Bool
+    @Binding var typing: Bool
+    
+    var body: some View {
+        VStack {
+            let totalSpacePerChar: CGFloat = spacePerChar(charCount: answer.count)
+            let TextSide: CGFloat = totalSpacePerChar * 4 / 5
+            let remainingSpace = totalSpacePerChar * 1 / 5
+            let horizontalPadding: CGFloat = remainingSpace * 2 / 6
+            let verticalPadding: CGFloat = horizontalPadding * 1.5
+            let spacing: CGFloat = totalSpacePerChar * 2 / 6
+            ZStack {
+                TextField("", text: $inputText)
+                    .textInputAutocapitalization(.never)
+                    .focused($isTyping)
+                    .autocorrectionDisabled(true)
+                    .foregroundStyle(Color.clear)
+                    .accentColor(.clear)
+                    .frame(width: 1, height: 1)
+                    .background(.clear)
+                    .onChange(of: inputText, { oldText, newText in
+                        if newText.count >= blankChar.count {
+                            inputText = String(newText.prefix(blankChar.count))
+                            if oldText.count == blankChar.count - 1 {
+                                isTyping = false
+                            }
+                        }
+                    })
+                    .onChange(of: typing, {
+                        isTyping = typing
+                    })
+                    .onChange(of: isTyping, {
+                        typing = isTyping
+                    })
+                HStack(spacing: spacing) {
+                    ForEach(answer.indices, id: \.self) { charIndex in
+                        if let blankCharPos = blankChar.firstIndex(of: charIndex) {
+                            let displayChar = blankCharPos < inputTextArray.count ? inputTextArray[blankCharPos] : " "
+                            Text(String(displayChar))
+                                .foregroundStyle(Color.white)
+                                .frame(width: TextSide * 0.8, height: TextSide)
+                                .padding(.vertical, verticalPadding)
+                                .padding(.horizontal, horizontalPadding)
+                                .background(RoundedRectangle(cornerRadius: 10))
+                                .cornerRadius(radiusPerChar(charCount: 4))
+                        } else {
+                            Text("\(answer[charIndex])")
+                                .foregroundStyle(.black)
+                                .bold()
+                        }
+                    }
+                }
+                .font(.system(size: 20))
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    isTyping = true
+                }
+            }
+            
+            if isAnswered {
+                ZStack {
+                    HStack(spacing: spacing) {
+                        ForEach(answer.indices, id: \.self) { charIndex in
+                            if let blankCharPos = blankChar.firstIndex(of: charIndex) {
+                                let displayChar = blankCharPos < inputTextArray.count ? inputTextArray[blankCharPos] : " "
+                                Text(String(answer[charIndex]))
+                                    .foregroundStyle(Color.white)
+                                    .frame(width: TextSide * 0.8, height: TextSide)
+                                    .padding(.vertical, verticalPadding)
+                                    .padding(.horizontal, horizontalPadding)
+                                    .background(RoundedRectangle(cornerRadius: 10)
+                                        .fill(displayChar == answer[charIndex] ? .green : .red))
+                                    .cornerRadius(radiusPerChar(charCount: 4))
+                            } else {
+                                Text("\(answer[charIndex])")
+                                    .foregroundStyle(.black)
+                                    .bold()
+                            }
+                        }
+                    }
+                    .font(.system(size: 20))
+                }
+            }
+        }
+    }
+    private func spacePerChar(charCount: Int) -> CGFloat {
+        if charCount <= 5 { return 34 }
+        if charCount <= 10 { return 25 }
+        return 20
+    }
+    
+    private func radiusPerChar(charCount: Int) -> CGFloat {
+        if charCount <= 5 { return 8 }
+        if charCount <= 10 { return 6 }
+        return 4
+    }
+    
+    private func fontPerChar(charCount: Int) -> Font {
+        if charCount <= 8 { return Font.system(size: 20) }
+        if charCount <= 12 { return Font.system(size: 17) }
+        return Font.system(size: 14)
+    }
+}
+
 fileprivate struct testView: View {
     private let question: fill_question = fill_question(
         answer: ans_exp(
@@ -221,14 +301,21 @@ fileprivate struct testView: View {
     )
     
     var body: some View {
-        play_fill(
-            question: Question(
-                bindedMeaning: 0,
-                questionType: .fill,
-                questionData: question.toQuestionData(),
-                questionString: "What is the synonym of the word \"happy\"?"
+        if let image = UIImage(named: "apples") {
+            let fileObject = FileObject(fileType: .image, file: .image(image))
+            play_fill(
+                question: Question(
+                    bindedMeaning: 0,
+                    questionType: .fill,
+                    questionData: question.toQuestionData(),
+                    questionString: "What is the synonym of the word \"happy\"?",
+                    file: fileObject
+                )
             )
-        )
+        } else {
+            Text("Image not found")
+                .foregroundColor(.red)
+        }
     }
 }
 
