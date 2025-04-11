@@ -269,10 +269,13 @@ struct EnglishEditWord: View {
                 })
                 ToolbarItem(placement: .topBarTrailing, content: {
                     Button(action: {
+                        // If the no wordTrans, delete the EnglishWord
                         if transforms.isEmpty {
                             deleteWord = true
                             return
                         }
+                        
+                        // Compare each wordTrana with wOrigin, if not 
                     }, label: {
                         Text("Done")
                             .foregroundStyle(Color.green)

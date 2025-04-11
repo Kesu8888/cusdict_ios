@@ -155,16 +155,17 @@ struct play_fill: View {
     }
 }
 
-fileprivate struct fillText: View {
+fileprivate struct testClearTextfield: View {
     var inputTextArray: [Character] {
         return Array(inputText)
     }
-    @State var answer: [Character] = ["A", "p", "p", "l", "e"]
-    @State var blankChar: [Int] = [1, 2]
-    @State var inputText: String = "P"
+    @State var answer: [Character]
+    @State var blankChar: [Int]
+    @Binding var inputText: String
     @FocusState var isTyping: Bool
     @Binding var isAnswered: Bool
     @Binding var typing: Bool
+    @Binding var answerCorrect: Bool
     
     var body: some View {
         VStack {
@@ -222,7 +223,7 @@ fileprivate struct fillText: View {
                 }
             }
             
-            if isAnswered {
+            if isAnswered && !answerCorrect {
                 ZStack {
                     HStack(spacing: spacing) {
                         ForEach(answer.indices, id: \.self) { charIndex in
