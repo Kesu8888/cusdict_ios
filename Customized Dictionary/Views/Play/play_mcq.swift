@@ -11,7 +11,7 @@ struct play_mcq: View {
     let mcq: mcq_question
     let questionString: String
     
-    let image: FileObject?
+    let image: UIImage?
     var randomizedChoices: [ans_exp]
     let fontSize = UIScreen.main.bounds.width * 0.05
     let answerHeight = UIScreen.main.bounds.height * 0.07
@@ -30,7 +30,11 @@ struct play_mcq: View {
     init(question: Question) {
         mcq = mcq_question(questionData: question.questionData)
         questionString = question.questionString
-        self.image = question.file
+        if case let .image(uiImage) = question.file?.file {
+            image = uiImage
+        } else {
+            image = nil
+        }
         correctAnswer = mcq.answer.id
         randomizedChoices = mcq.choices + [mcq.answer]
         randomizedChoices.shuffle()
@@ -51,6 +55,14 @@ struct play_mcq: View {
                 Spacer()
             }
             .font(CustomFont.SFPro_Rounded(.semibold, size: fontSize))
+            
+            if image != nil {
+                displayImageView(
+                    displayImage: image!,
+                    height: UIScreen.main.bounds.height * 0.3,
+                    ratio: .wider
+                )
+            }
             
             Spacer()
             
@@ -139,21 +151,20 @@ fileprivate struct testView: View {
     )
     
     var body: some View {
-        NavigationStack {
-            NavigationLink(
-                destination: {
-                    play_mcq(
-                        question: Question(
-                            bindedMeaning: 0,
-                            questionType: .mcq,
-                            questionData: question.toQuestionData(),
-                            questionString: "What's the synonym of happy?"
-                        )
-                    )
-                },
-                label: {
-                Text("tap")
-            })
+        if let image = UIImage(named: "apples") {
+            let fileObject = FileObject(fileType: .image, file: .image(image))
+            play_mcq(
+                question: Question(
+                    bindedMeaning: 0,
+                    questionType: .mcq,
+                    questionData: question.toQuestionData(),
+                    questionString: "What's the synonym of happy?",
+                    file: fileObject
+                )
+            )
+        } else {
+            Text("Image not found")
+                .foregroundColor(.red)
         }
     }
 }

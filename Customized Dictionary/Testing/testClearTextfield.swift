@@ -11,12 +11,13 @@ struct testClearTextfield: View {
     var inputTextArray: [Character] {
         return Array(inputText)
     }
-    @State var answer: [Character] = ["A", "p", "p", "l", "e"]
-    @State var blankChar: [Int] = [1, 2]
-    @State var inputText: String = "P"
+    @State var answer: [Character]
+    @State var blankChar: [Int]
+    @Binding var inputText: String
     @FocusState var isTyping: Bool
     @Binding var isAnswered: Bool
     @Binding var typing: Bool
+    @Binding var answerCorrect: Bool
     
     var body: some View {
         VStack {
@@ -74,7 +75,7 @@ struct testClearTextfield: View {
                 }
             }
             
-            if isAnswered {
+            if isAnswered && !answerCorrect {
                 ZStack {
                     HStack(spacing: spacing) {
                         ForEach(answer.indices, id: \.self) { charIndex in
@@ -120,14 +121,24 @@ struct testClearTextfield: View {
 }
 
 fileprivate struct testView: View {
+    @State var inputText = "pp"
     @State var answerd: Bool = false
     @State var isTyping = false
+    @State var answerCorrect = false
     
     var body: some View {
-        NavigationView(content: {
-            VStack {
-                Text("Hello")
-                testClearTextfield(isAnswered: $answerd, typing: $isTyping)
+        NavigationView(
+            content: {
+                VStack {
+                    Text("Hello")
+                    testClearTextfield(
+                        answer: ["a", "p", "p", "l", "e"],
+                        blankChar: [1, 2],
+                        inputText: $inputText,
+                        isAnswered: $answerd,
+                        typing: $isTyping,
+                        answerCorrect: $answerCorrect
+                    )
                 Button(action: {
                     
                 }, label: {
